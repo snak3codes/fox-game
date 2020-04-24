@@ -1,27 +1,22 @@
-import gameState from "./gameState";
-const TICK_RATE = 3000; // Tick every 3 seconds
+import game, { handleUserAction } from "./gameState";
+import initButtons from "./buttons";
+import { TICK_RATE } from "./constants";
 
 async function init() {
-  console.log("Starting Game");
+  console.log("starting game");
+  initButtons(handleUserAction);
 
   let nextTimeToTick = Date.now();
-
   function nextAnimationFrame() {
     const now = Date.now();
-
     if (nextTimeToTick <= now) {
-      gameState.tick();
+      game.tick();
       nextTimeToTick = now + TICK_RATE;
     }
     requestAnimationFrame(nextAnimationFrame);
   }
-  requestAnimationFrame(nextAnimationFrame);
+
+  nextAnimationFrame();
 }
 
 init();
-
-/* == Benefits of requestAnimationFrame == :
-- The browser can optimize it, so animations will be smoother 
-- Animations in inactive tabs will stop, allowing the CPU to chill
-- More battery-friendly
-*/
